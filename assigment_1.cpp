@@ -17,17 +17,17 @@ using namespace std;
 int logbase(int, int);
 
 int main(){
-	const double PI = 3.14159265;
+	
 
 	cout <<endl << endl << "Assigment 1" << endl << endl;	
 	//calling cos form cmath
 	cout << "**********************************************************" << endl;
-	double result = cos(2/3);	
+	float result = cos((float)2/3);	
 	cout << "cos(2/3) = " << result << endl << endl;
 	
 	//calling sin from cmath
 	cout << "**********************************************************" << endl;
-	result = 2*sin(2/3);
+	result = 2*(sin((float)2/3));
 	cout << "2sin(2/3) = " << result << endl << endl;
 
 	//calling log10 from cmath
@@ -42,9 +42,9 @@ int main(){
 
 	cout << "**********************************************************" << endl;
 	cout << "Calculating for 3^sin(x) " << endl;
-       	cout << "\t x=1   \t  3^sin(x)=" << pow(3, sin(1)) << endl;
-	cout << "\t x=10  \t  3^sin(x)=" << pow(3, sin(10)) << endl;
-	cout << "\t x=100 \t  3^sin(x)=" << pow(3, sin(10)) << endl << endl;
+       	cout << "\t x=1   \t  3^sin(x)=" << pow(3, sin((float)1)) << endl;
+	cout << "\t x=10  \t  3^sin(x)=" << pow(3, sin((float)10)) << endl;
+	cout << "\t x=100 \t  3^sin(x)=" << pow(3, sin((float)100)) << endl << endl;
 
 	cout << "**********************************************************" << endl;
 	cout << "Calculating for log base 2 of (x^2 +1) " << endl;
@@ -71,11 +71,11 @@ int logbase(int x, int b){
 
 
 	cout << "Calculating log base: " << b <<" term: " << x << " using formula ln(term)/ln(base)"<< endl;
-	double term = log(x);
+	float term = log(x);
       	cout << "\t ln(x) = "<< term << endl;
-	double base = log(b);
+	float base = log(b);
 	cout << "\t ln(b) = " << base << endl;
-	double result = term/base;
+	float result = term/base;
 	cout << "\t ln(x)/ln(b) =  " << result << endl;	
 	
 	return result;
