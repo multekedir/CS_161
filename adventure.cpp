@@ -3,34 +3,38 @@
 ** Program: adventure.cpp
 ** Author: Multezem Kedir
 ** Date: 21 January 2018
-** Description:
-** Input:
+** Description: A text adventure game.
+** Input: libraries: iostream, string, ctime, cstdlib
 ** Output:
 ******************************************************/
 
 #include <iostream>
 #include <string>
 #include <ctime>
-#include <cstdlib> /*include to allow rand() and srand() to be used*/
+#include <cstdlib>
 
 using namespace std;
 
 struct Item{
+	//an object to keep track of items
 	string name;
-	bool pickedItem = false;
+	bool pickedItem;
 }key, apple, pod;
 
 struct Room{
+	//an object to keep track of Rooms
 	string name;
 	string message;
 	Item item;
-	bool hasItem = false;
+	bool hasItem;
 	Room* north; //room adjest in the north
 	Room* south; //room adjest in the south
 	Room* west;  //room adjest in the west
 	Room* east;  // //room adjest in the east
 }bedRooom,masterBedRoom, livingRoom,kitchen,dining,laundry,garage,porch,lHall,door,westBHall,eastBHall,wall;
 
+
+//number of steps take by the user
 int numOfStep = 0;
 
 //function prototypes
@@ -47,16 +51,19 @@ bool openDoor(Room);
 
 int main() {
 
-	creatRooms();
-	int input;
-	string direction;
-	string roomName;
-	Room curent = door;
-	srand(time(NULL));
 
-	cout    << "**************** wellcome to the Adventure Game **********************" << endl
+	int input;
+	string direction, roomName;
+	Room curent = door; //the first room
+
+	creatRooms(); //set up rooms
+	srand(time(NULL)); //seed the random number
+
+	cout    << "**************** Welcome to the Adventure Game **********************" << endl
 			<< "Your objective for this game is to find the key and leave the house!" << endl
-			<< "Make sure you do this beffor geting hungrey, food can be found in the kitchen" <<endl;
+			<< "Make sure you do this before getting hungry, food can be found in the kitchen" <<endl;
+
+
 	cout   << "Your list of commands are"  << endl << "\t  0  \t go north"
 										   << endl << "\t  1  \t go south"
 										   << endl << "\t  2  \t go west"
@@ -67,7 +74,7 @@ int main() {
 										   << endl << "\t  7  \t quit"<<endl;
 	do{
 
-		cout << "Curent Location >> " + curent.name << endl;
+		cout << "Current Location >> " + curent.name << endl;
 		cout << "Enter Command >> ";
 		cin >> input;
 
@@ -115,10 +122,21 @@ int main() {
 
 void creatRooms(){
 
+	/*********************************************************************
+	** Function: creatRooms()
+	** Description: Setup room adjacency(north,south,west,east), and
+	** 				add items (key,apple, pod)
+	** Parameters: none
+	** Pre-Conditions:
+	** Post-Conditions:
+	*********************************************************************/
+
 	//set up items
 	key.name = "key";
 	apple.name = "apple";
 	pod.name = "pod";
+
+	//	setup wall
 	wall.message = "You hit a wall";
 	wall.name = "wall";
 
@@ -225,6 +243,15 @@ void creatRooms(){
 }
 
 bool checkRoomItem(Room curent){
+	/*********************************************************************
+	** Function: checkRoomItem
+	** Description: Checks if a room has an item
+	** Parameters: current: The current Room
+	** Pre-Conditions:
+	** Post-Conditions:
+	** Retruns: True if Room has Item
+	** Calls: get()
+	*********************************************************************/
 	string input;
 	if(curent.hasItem){
 		cout << "This room has " + curent.item.name << endl;
@@ -232,14 +259,26 @@ bool checkRoomItem(Room curent){
 		cin >> input;
 		if(input == "yes" || input == "y"){
 			get(curent.item, curent);
+			return true;
 		}
 	}
 	return false;
 }
 
 bool doPodchallenge(){
+	/*********************************************************************
+		** Function: doPodchallenge
+		** Description: Dose the tide pod challenge and
+		**  			depending on a random number the
+		**  			user might loose,
+		** Parameters: none
+		** Pre-Conditions:
+		** Post-Conditions:
+		** Retruns: True if the person is alive
+		** Calls:
+		*********************************************************************/
 	int x;
-	x = rand() %2;
+	x = rand() %2; // get random number range from 0 to 2
 	cout << x << endl;
 	string input;
 	cin >> input;
@@ -261,6 +300,15 @@ bool doPodchallenge(){
 	return false;
 }
 bool isHungery(){
+	/*********************************************************************
+	** Function: isHungery
+	** Description: Checks if the person has take to many steps without eating
+	** Parameters: none
+	** Pre-Conditions:
+	** Post-Conditions:
+	** Retruns: true if the person is hungery
+	** Calls:
+	*********************************************************************/
 	if((apple.pickedItem == false) && (numOfStep > 5)){
 		cout << "You died out of Hunger " <<endl;
 		return true;
@@ -269,6 +317,15 @@ bool isHungery(){
 }
 
 bool getItems(){
+	/*********************************************************************
+	** Function: getItems
+	** Description: Prints what item the person has
+	** Parameters: none
+	** Pre-Conditions:
+	** Post-Conditions:
+	** Retruns:
+	** Calls:
+	*********************************************************************/
 	if(apple.pickedItem == true){
 		cout << "You have eat an apple" <<endl;
 	}
@@ -281,9 +338,18 @@ bool getItems(){
 	return true;
 }
 bool openDoor(Room curent){
+	/*********************************************************************
+	** Function: openDoor
+	** Description: Checks if the person is in the right room and has the key
+	** Parameters: curent: the current room
+	** Pre-Conditions:
+	** Post-Conditions:
+	** Retruns: if the door can be opened and the has key
+	** Calls:
+	*********************************************************************/
 	if(curent.name == door.name && key.pickedItem == true){
 		cout << "YOU WON GOOD JOB" << endl;
-		exit(0);
+		exit(0); //quit programm
 		return true;
 	}else{
 		cout << "You don't the key or You are not by the door" << endl;
@@ -292,6 +358,15 @@ bool openDoor(Room curent){
 }
 
 string peek(Room curent, string direction){
+	/*********************************************************************
+	** Function: peek
+	** Description: checks the name of the adjecent room
+	** Parameters: curent: the current room, direction (north, south, east, west)
+	** Pre-Conditions:
+	** Post-Conditions:
+	** Retruns: name of the nxt room
+	** Calls:
+	*********************************************************************/
 	string name = "Nothing";
 	if (direction == "north"){
 		name = curent.north->name;
@@ -306,6 +381,15 @@ string peek(Room curent, string direction){
 }
 
 bool get(Item item, Room curent){
+	/*********************************************************************
+	** Function: get
+	** Description: picks up the the item in the room
+	** Parameters: curent: the current room, item(key,apple, pod)
+	** Pre-Conditions:
+	** Post-Conditions:
+	** Retruns: true if the picked up the item
+	** Calls:doPodchallenge to start the the pod challenge game
+	*********************************************************************/
 	string input;
 	if(item.name == key.name && curent.name == porch.name){
 		cout << "You Picked up Key" << endl;
@@ -325,6 +409,14 @@ bool get(Item item, Room curent){
 }
 
 Room go(string direction, Room curent){
+	/*********************************************************************
+	** Function: go
+	** Description: moves the user from one room to another
+	** Parameters: curent: the current room, direction(north,south,west, east)
+	** Pre-Conditions:
+	** Post-Conditions:
+	** Retruns: Room
+	*********************************************************************/
 	if ((direction == "north") && (curent.north->name != wall.name)){
 		cout << "Going north" << endl;
 		numOfStep++;
